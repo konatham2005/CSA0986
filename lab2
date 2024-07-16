@@ -1,0 +1,71 @@
+import java.util.Scanner;
+class Hw {
+    public static void main(String[] args) {
+        int n,i;
+        Scanner s=new Scanner(System.in);
+        System.out.println("No of peoples : ");
+        n=s.nextInt();
+        int h[]=new int[10];
+        int w[]=new int[10];
+        System.out.println("Enter Heights : ");
+        for(i=0;i<n;i++)
+        
+            h[i]=s.nextInt();
+        
+         System.out.println("Enter Weights : ");
+        for(i=0;i<n;i++)
+        
+          w[i]=s.nextInt();  
+        
+        int sumh=0;
+        for(i=0;i<n;i++)
+        
+            sumh=sumh+h[i];
+        
+        int avgh;
+        avgh=(sumh/n);
+        System.out.println("Avg Height : "+avgh);
+        int sumw=0;
+        for(i=0;i<n;i++)
+        
+            sumw=sumw+w[i];
+        
+           int avgw;
+           avgw=(sumw/n);
+           
+        System.out.println("Avg Weight : "+avgw);
+        int eh=0,gh=0,lh=0;
+        int ew=0,gw=0,lw=0;
+        for(i=0;i<n;i++)
+        {
+          if(h[i]<avgh)
+          {
+              lh=lh+1;
+          }
+          if(h[i]>avgh)
+          {
+              gh=gh+1;
+          }
+          
+        }
+        for(i=0;i<n;i++)
+        {
+            if(w[i]<avgw)
+            {
+                lw=lw+1;
+            }
+            if(w[i]>avgw)
+            {
+                gw=gw+1;
+            }
+          
+        }
+        System.out.println("no of peoples above avg height  : "+gh);
+        System.out.println("no of peoples below avg height  : "+lh);
+        System.out.println("no of peoples above avg weight  : "+gw);
+        System.out.println("no of peoples below avg weight  : "+lw);
+       
+        
+
+    }
+}
