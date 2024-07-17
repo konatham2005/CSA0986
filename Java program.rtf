@@ -1,0 +1,376 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\*\generator Riched20 10.0.16299}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\b\f0\fs22\lang9 EXECUTE IN BANK TRANSACTIONS SUCH AS VIEW BALANCE, DEPOSIT, WITHDRAWAL AND MONEY TRANSFER,ETC..... BY USING SINGLE LEVEL INHERITANCE. NOTE: INPUTS: USER INPUTS SHOULD BE RECIEVED IN BASE CLASS. PROCESS SHOULD BE DONE IN THE DERIVED CLASS. RESULT SHOULD BE DONE IN MAIN CLASS.\par
+\par
+\b0 import java.util.Arrays;\par
+import java.util.Scanner;\par
+class Bank \{\par
+    int inputDeposit() \{\par
+        Scanner sc = new Scanner(System.in);\par
+        System.out.print("Enter the Deposit amount: ");\par
+        int da = sc.nextInt();\par
+        return da;\par
+    \}\par
+    int inputWithdraw() \{\par
+        Scanner sc = new Scanner(System.in);\par
+        System.out.print("Enter the Withdraw amount: ");\par
+        int wa = sc.nextInt();\par
+        return wa;\par
+    \}\par
+    int inputTransfer() \{\par
+        Scanner sc = new Scanner(System.in);\par
+        System.out.print("Enter the Transfer amount: ");\par
+        int ta = sc.nextInt();\par
+        return ta;\par
+    \}\par
+\}\par
+class Transaction extends Bank \{\par
+    int deposit(int ta, int da) \{\par
+        return ta + da;\par
+    \}\par
+    int withdraw(int ta, int wa) \{\par
+        return ta - wa;\par
+    \}\par
+    int transfer(int ta, int tra) \{\par
+        return ta - tra;\par
+    \}\par
+\}\par
+public class Main \{\par
+    public static void main(String[] args) \{\par
+        int total = 1000;\par
+        int[] accountNumbers = \{1001, 1002, 1011, 1012\}; \par
+        Arrays.sort(accountNumbers);\par
+        Scanner sc = new Scanner(System.in);\par
+        Transaction t = new Transaction();\par
+        int choice;\par
+        while (true) \{\par
+            System.out.println("\\nBank balance: " + total);\par
+            System.out.println("Enter choice: Deposit = '1', Withdraw = '2', Transfer = '3', Exit = '4'");\par
+            choice = sc.nextInt();\par
+            if (choice == 1) \{\par
+                int depAmou = t.inputDeposit();\par
+                total = t.deposit(total, depAmou);\par
+                System.out.println("Before Deposit: " + (total - depAmou));\par
+                System.out.println("After Deposit: " + total);\par
+            \} else if (choice == 2) \{\par
+                int witAmou = t.inputWithdraw();\par
+                if (witAmou > total) \{\par
+                    System.out.println("Insufficient amount");\par
+                \} else \{\par
+                    total = t.withdraw(total, witAmou);\par
+                    System.out.println("Before Withdraw: " + (total + witAmou));\par
+                    System.out.println("After Withdraw: " + total);\par
+                \}\par
+            \} else if (choice == 3) \{\par
+                System.out.print("Enter account number to transfer to: ");\par
+                int accNum = sc.nextInt();\par
+                if (Arrays.binarySearch(accountNumbers, accNum) >= 0) \{\par
+                    int traAmou = t.inputTransfer();\par
+                    if (traAmou > total) \{\par
+                        System.out.println("Insufficient amount");\par
+                    \} else \{\par
+                        total = t.transfer(total, traAmou);\par
+                        System.out.println("Before Transfer: " + (total + traAmou));\par
+                        System.out.println("After Transfer: " + total);\par
+                    \}\par
+                \} else \{\par
+                    System.out.println("Invalid account number");\par
+                \}\par
+            \} else if (choice == 4) \{\par
+                System.out.println("Exiting");\par
+                break;\par
+            \} else \{\par
+                System.out.println("Invalid choice");\par
+            \}\par
+        \}\par
+    \}\par
+\}\par
+\b\par
+CREATE A ACCOUNT WITH A MINIMUM BALANCE OF 2000 IN THE BASE CLASS. IN ONE OF THE DERIVED CLASS, TRY TO TRANSFER THE AMOUNT 5000. TO YOUR FRIEND. IN ANOTHER DERIVED CLASS TRY TO WITHDRAW THE AMOUNT BY MAKING YOUR ACCOUNT BALANCE AS ZERO. USE MULTILEVEL INHERITENCE.\par
+\par
+\b0 import java.util.Scanner;\par
+class Account \{\par
+    protected int balance;\par
+    public Account(int initialBalance) \{\par
+        if (initialBalance < 2000) \{\par
+            System.out.println("Minimum balance should be 2000. Setting balance to 2000.");\par
+            this.balance = 2000;\par
+        \} else \{\par
+            this.balance = initialBalance;\par
+        \}\par
+    \}\par
+    public void displayBalance() \{\par
+        System.out.println("Current balance: " + balance);\par
+    \}\par
+\}\par
+class Transaction extends Account \{\par
+    public Transaction(int initialBalance) \{\par
+        super(initialBalance);\par
+    \}\par
+    public void deposit(int amount) \{\par
+        balance += amount;\par
+        System.out.println("Deposited: " + amount);\par
+    \}\par
+    public void withdraw(int amount) \{\par
+        if (balance - amount < 0) \{\par
+            System.out.println("Insufficient funds.");\par
+        \} else \{\par
+            balance -= amount;\par
+            System.out.println("Withdrawn: " + amount);\par
+        \}\par
+    \}\par
+    public void transfer(int amount) \{\par
+        if (balance - amount < 0) \{\par
+            System.out.println("Insufficient funds.");\par
+        \} else \{\par
+            balance -= amount;\par
+            System.out.println("Transferred: " + amount);\par
+        \}\par
+    \}\par
+\}\par
+class Transfer extends Transaction \{\par
+    public Transfer(int initialBalance) \{\par
+        super(initialBalance);\par
+    \}\par
+    public void performTransfer() \{\par
+        Scanner scanner = new Scanner(System.in);\par
+        System.out.print("Enter amount to transfer: ");\par
+        int amount = scanner.nextInt();\par
+        transfer(amount);\par
+    \}\par
+\}\par
+class Withdraw extends Transaction \{\par
+    public Withdraw(int initialBalance) \{\par
+        super(initialBalance);\par
+    \}\par
+    public void performWithdraw() \{\par
+        Scanner scanner = new Scanner(System.in);\par
+        System.out.print("Enter amount to withdraw: ");\par
+        int amount = scanner.nextInt();\par
+        withdraw(amount);\par
+    \}\par
+\}\par
+public class Main \{\par
+    public static void main(String[] args) \{\par
+        int initialBalance = 2000;\par
+        Transfer transferAccount = new Transfer(initialBalance);\par
+        Withdraw withdrawAccount = new Withdraw(initialBalance);\par
+        Scanner scanner = new Scanner(System.in);\par
+        int choice;\par
+        while (true) \{\par
+            transferAccount.displayBalance();\par
+            System.out.println("Enter choice: Transfer = 1, Withdraw = 2, Exit = 3");\par
+            choice = scanner.nextInt();\par
+            switch (choice) \{\par
+                case 1:\par
+                    transferAccount.performTransfer();\par
+                    break;\par
+                case 2:\par
+                    withdrawAccount.performWithdraw();\par
+                    break;\par
+                case 3:\par
+                    System.out.println("Exiting.");\par
+                    return;\par
+                default:\par
+                    System.out.println("Invalid choice.");\par
+            \}\par
+        \}\par
+    \}\par
+\}\par
+\par
+\b (AC NO, INT BAL, DEP , DBAL, WITH, WITHBAL, TRANN, TRA, TBAL)ASSUME THAT YOU ARE GOING TO START A BANK WITH, FOUR BRANCHES. BRANCH 1: CREATE ACCOUNT. BRANCH2: DEPOSIT. BRANCH 3:WITHDRAWAL, BRANCH 4 : TRANFER.\par
+\b0\par
+import java.util.Arrays;\par
+import java.util.Scanner;\par
+class Bank \{\par
+    int inputDeposit() \{\par
+        Scanner sc = new Scanner(System.in);\par
+        System.out.print("Enter the Deposit amount: ");\par
+        int da = sc.nextInt();\par
+        return da;\par
+    \}\par
+    int inputWithdraw() \{\par
+        Scanner sc = new Scanner(System.in);\par
+        System.out.print("Enter the Withdraw amount: ");\par
+        int wa = sc.nextInt();\par
+        return wa;\par
+    \}\par
+    int inputTransfer() \{\par
+        Scanner sc = new Scanner(System.in);\par
+        System.out.print("Enter the Transfer amount: ");\par
+        int ta = sc.nextInt();\par
+        return ta;\par
+    \}\par
+\}\par
+class Transaction extends Bank \{\par
+    int deposit(int ta, int da) \{\par
+        return ta + da;\par
+    \}\par
+    int withdraw(int ta, int wa) \{\par
+        return ta - wa;\par
+    \}\par
+    int transfer(int ta, int tra) \{\par
+        return ta - tra;\par
+    \}\par
+\}\par
+class Deposit extends Transaction \{\par
+    void performDeposit(int total) \{\par
+        int depAmou = inputDeposit();\par
+        total = deposit(total, depAmou);\par
+        System.out.println("Before Deposit: " + (total - depAmou));\par
+        System.out.println("After Deposit: " + total);\par
+    \}\par
+\}\par
+class Withdraw extends Transaction \{\par
+    void performWithdraw(int total) \{\par
+        int witAmou = inputWithdraw();\par
+        if (witAmou > total) \{\par
+            System.out.println("Insufficient amount");\par
+        \} else \{\par
+            total = withdraw(total, witAmou);\par
+            System.out.println("Before Withdraw: " + (total + witAmou));\par
+            System.out.println("After Withdraw: " + total);\par
+        \}\par
+    \}\par
+\}\par
+class Transfer extends Transaction \{\par
+    void performTransfer(int total, int[] accountNumbers) \{\par
+        Scanner sc = new Scanner(System.in);\par
+        System.out.print("Enter account number to transfer to: ");\par
+        int accNum = sc.nextInt();\par
+        if (Arrays.binarySearch(accountNumbers, accNum) >= 0) \{\par
+            int traAmou = inputTransfer();\par
+            if (traAmou > total) \{\par
+                System.out.println("Insufficient amount");\par
+            \} else \{\par
+                total = transfer(total, traAmou);\par
+                System.out.println("Before Transfer: " + (total + traAmou));\par
+                System.out.println("After Transfer: " + total);\par
+            \}\par
+        \} else \{\par
+            System.out.println("Invalid account number");\par
+        \}\par
+    \}\par
+\}\par
+class ShowBalance extends Transaction \{\par
+    void displayBalance(int total) \{\par
+        System.out.println("\\nBank balance: " + total);\par
+    \}\par
+\}\par
+public class Main \{\par
+    public static void main(String[] args) \{\par
+        int total = 1000;\par
+        int[] accountNumbers = \{1001, 1002, 1011, 1012\}; \par
+        Arrays.sort(accountNumbers);\par
+        Scanner sc = new Scanner(System.in);\par
+        Deposit deposit = new Deposit();\par
+        Withdraw withdraw = new Withdraw();\par
+        Transfer transfer = new Transfer();\par
+        ShowBalance showBalance = new ShowBalance();\par
+        int choice;\par
+        while (true) \{\par
+            showBalance.displayBalance(total);\par
+            System.out.println("Enter choice: Deposit = '1', Withdraw = '2', Transfer = '3', Exit = '4'");\par
+            choice = sc.nextInt();\par
+            if (choice == 1) \{\par
+                deposit.performDeposit(total);\par
+            \} else if (choice == 2) \{\par
+                withdraw.performWithdraw(total);\par
+            \} else if (choice == 3) \{\par
+                transfer.performTransfer(total, accountNumbers);\par
+            \} else if (choice == 4) \{\par
+                System.out.println("Exiting");\par
+                break;\par
+            \} else \{\par
+                System.out.println("Invalid choice");\par
+            \}\par
+        \}\par
+    \}\par
+\}\par
+\par
+\b CONSIDER A STUDENT WHO COMPLETED 10TH STANDARD AND COMPLETED 12TH. DISPLAY THE MARKS, AND STU DETAILS.(NAME, REG NO, TOTAL AVG. ) 12 IN ONE BASE CLASS AND 10TH IN ANOTHER BASE CLASS. USE INTERFACE.\par
+\par
+\b0 import java.util.Scanner;\par
+interface TenthStandard \{\par
+    void display10thDetails();\par
+\}\par
+interface TwelfthStandard \{\par
+    void display12thDetails();\par
+\}\par
+class Student \{\par
+    String name;\par
+    int regNo;\par
+    Student(String name, int regNo) \{\par
+        this.name = name;\par
+        this.regNo = regNo;\par
+    \}\par
+\}\par
+class TenthStandardStudent implements TenthStandard \{\par
+    Student student;\par
+    int[] marks;\par
+    TenthStandardStudent(String name, int regNo, int[] marks) \{\par
+        this.student = new Student(name, regNo);\par
+        this.marks = marks;\par
+    \}\par
+    public void display10thDetails() \{\par
+        System.out.println("Name: " + student.name);\par
+        System.out.println("Registration No: " + student.regNo);\par
+        System.out.println("10th Standard Marks:");\par
+        for (int i = 0; i < marks.length; i++) \{\par
+            System.out.println("Subject " + (i + 1) + ": " + marks[i]);\par
+        \}\par
+    \}\par
+\}\par
+class TwelfthStandardStudent implements TwelfthStandard \{\par
+    Student student;\par
+    int[] marks;\par
+    TwelfthStandardStudent(String name, int regNo, int[] marks) \{\par
+        this.student = new Student(name, regNo);\par
+        this.marks = marks;\par
+    \}\par
+    public void display12thDetails() \{\par
+        System.out.println("Name: " + student.name);\par
+        System.out.println("Registration No: " + student.regNo);\par
+        System.out.println("12th Standard Marks:");\par
+        for (int i = 0; i < marks.length; i++) \{\par
+            System.out.println("Subject " + (i + 1) + ": " + marks[i]);\par
+        \}\par
+    \}\par
+\}\par
+public class Main \{\par
+    public static void main(String[] args) \{\par
+        Scanner scanner = new Scanner(System.in);\par
+        System.out.print("Enter name for 10th Standard Student: ");\par
+        String name10th = scanner.nextLine();\par
+        System.out.print("Enter registration number for 10th Standard Student: ");\par
+        int regNo10th = scanner.nextInt();\par
+        System.out.print("Enter number of subjects for 10th Standard Student: ");\par
+        int numSubjects10th = scanner.nextInt();\par
+        int[] marks10th = new int[numSubjects10th];\par
+        for (int i = 0; i < numSubjects10th; i++) \{\par
+            System.out.print("Enter marks for subject " + (i + 1) + ": ");\par
+            marks10th[i] = scanner.nextInt();\par
+        \}\par
+        TenthStandardStudent student10th = new TenthStandardStudent(name10th, regNo10th, marks10th);\par
+        scanner.nextLine(); \par
+        System.out.print("Enter name for 12th Standard Student: ");\par
+        String name12th = scanner.nextLine();\par
+        System.out.print("Enter registration number for 12th Standard Student: ");\par
+        int regNo12th = scanner.nextInt();\par
+        System.out.print("Enter number of subjects for 12th Standard Student: ");\par
+        int numSubjects12th = scanner.nextInt();\par
+        int[] marks12th = new int[numSubjects12th];\par
+        for (int i = 0; i < numSubjects12th; i++) \{\par
+            System.out.print("Enter marks for subject " + (i + 1) + ": ");\par
+            marks12th[i] = scanner.nextInt();\par
+        \}\par
+        TwelfthStandardStudent student12th = new TwelfthStandardStudent(name12th, regNo12th, marks12th);\par
+        student10th.display10thDetails();\par
+        System.out.println();\par
+        student12th.display12thDetails();\par
+\par
+        scanner.close();\par
+    \}\par
+\}\par
+}
+ 
